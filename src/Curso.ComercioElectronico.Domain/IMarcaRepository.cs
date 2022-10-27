@@ -9,3 +9,14 @@ public interface IMarcaRepository :  IRepository<Marca> {
 
 
 }
+
+
+public interface ITipoProductoRepository :  IRepository<TipoProducto> {
+
+
+    Task<bool> ExisteNombre(string nombre);
+
+    Task<bool> ExisteNombre(string nombre, int idExcluir);
+
+
+}

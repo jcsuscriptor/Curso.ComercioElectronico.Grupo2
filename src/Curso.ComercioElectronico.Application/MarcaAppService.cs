@@ -7,13 +7,11 @@ namespace Curso.ComercioElectronico.Application;
 
 public class MarcaAppService : IMarcaAppService
 {
-    private readonly IMarcaRepository repository;
-    //private readonly IUnitOfWork unitOfWork;
+    private readonly IMarcaRepository repository; 
 
     public MarcaAppService(IMarcaRepository repository)
     {
-        this.repository = repository;
-        //this.unitOfWork = unitOfWork;
+        this.repository = repository; 
     }
 
     public async Task<MarcaDto> CreateAsync(MarcaCrearActualizarDto marcaDto)
@@ -31,7 +29,7 @@ public class MarcaAppService : IMarcaAppService
  
         //Persistencia objeto
         marca = await repository.AddAsync(marca);
-        //await unitOfWork.SaveChangesAsync();
+        await repository.UnitOfWork.SaveChangesAsync();
 
         //Mapeo Entidad => Dto
         var marcaCreada = new MarcaDto();
@@ -60,7 +58,7 @@ public class MarcaAppService : IMarcaAppService
 
         //Persistencia objeto
         await repository.UpdateAsync(marca);
-        //await unitOfWork.SaveChangesAsync();
+        await repository.UnitOfWork.SaveChangesAsync();
 
         return;
     }
@@ -74,7 +72,7 @@ public class MarcaAppService : IMarcaAppService
         }
 
         repository.Delete(marca);
-        //await unitOfWork.SaveChangesAsync();
+        await repository.UnitOfWork.SaveChangesAsync();
 
         return true;
     }

@@ -10,6 +10,9 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
 {
     protected readonly ComercioElectronicoDbContext _context;
 
+    public IUnitOfWork UnitOfWork => _context;
+
+
     public EfRepository(ComercioElectronicoDbContext context)
     {
         _context = context;
@@ -33,7 +36,6 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
     {
 
         await _context.Set<TEntity>().AddAsync(entity);
-        await _context.SaveChangesAsync();
 
         return entity;
     }
@@ -41,7 +43,6 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
     public virtual async  Task UpdateAsync(TEntity entity)
     {
           _context.Update(entity);
-        await _context.SaveChangesAsync();
         
         return;
     }
@@ -49,7 +50,7 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
     public virtual void  Delete(TEntity entity)
     {
         _context.Set<TEntity>().Remove(entity);
-        _context.SaveChanges();
+        
  
     }
  

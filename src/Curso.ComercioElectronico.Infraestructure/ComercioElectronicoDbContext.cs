@@ -1,7 +1,9 @@
 ﻿using Curso.ComercioElectronico.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Curso.ComercioElectronico.Infraestructure;
+
 
 public class ComercioElectronicoDbContext:DbContext, IUnitOfWork
 {
@@ -11,6 +13,10 @@ public class ComercioElectronicoDbContext:DbContext, IUnitOfWork
 
     public string DbPath { get; set; }
 
+ /*        public ComercioElectronicoDbContext(DbContextOptions options) : base(options)
+        {
+        }
+ */
     public ComercioElectronicoDbContext()
     {
         var folder = Environment.SpecialFolder.LocalApplicationData;
@@ -22,7 +28,7 @@ public class ComercioElectronicoDbContext:DbContext, IUnitOfWork
     // The following configures EF to create a Sqlite database file in the
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+        => options.UseSqlite($"Data Source={DbPath}"); 
 
 } 
 

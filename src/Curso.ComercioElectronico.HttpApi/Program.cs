@@ -14,8 +14,14 @@ builder.Services.AddSwaggerGen();
 
 
 //Configuraciones de Dependencias
+//Agregar conexion a base de datos
+/* builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("ComercioElectronico"));    
+});
+ */
+
 builder.Services.AddScoped<ComercioElectronicoDbContext>();
-//builder.Services.AddScoped<IUnitOfWork, ComercioElectronicoDbContext>();
 
 builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
 builder.Services.AddTransient<IMarcaAppService, MarcaAppService>();

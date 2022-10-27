@@ -15,5 +15,17 @@ public class Marca
 }
 
 
+public class TipoProducto
+{
+    [Required]
+    public int Id {get;set;}
+
+    [Required]
+    [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
+    public string Nombre {get;set;}
+
+}
+
+
 
 
