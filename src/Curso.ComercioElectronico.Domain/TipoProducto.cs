@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Curso.ComercioElectronico.Domain;
 
-
-public class Marca
+public class TipoProducto
 {
     [Required]
     public int Id {get;set;}

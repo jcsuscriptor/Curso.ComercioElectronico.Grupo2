@@ -1,36 +1,28 @@
 ﻿using Curso.ComercioElectronico.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Options;
 
 namespace Curso.ComercioElectronico.Infraestructure;
 
 
-public class ComercioElectronicoDbContext:DbContext, IUnitOfWork
+public class ComercioElectronicoDbContext : DbContext, IUnitOfWork
 {
 
     //Agregar sus entidades
-    public DbSet<Marca> Marcas {get;set;}
+    public DbSet<Marca> Marcas { get; set; }
 
+    public DbSet<TipoProducto> TipoProductos { get; set; }
+    
+    public DbSet<Producto> Productos { get; set; }
+   
     public string DbPath { get; set; }
 
- /*        public ComercioElectronicoDbContext(DbContextOptions options) : base(options)
-        {
-        }
- */
-    public ComercioElectronicoDbContext()
+    public ComercioElectronicoDbContext(DbContextOptions<ComercioElectronicoDbContext> options) : base(options)
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = Path.Join(path, "curso.comercio-electronico.db");
- 
-    }
+    } 
 
-    // The following configures EF to create a Sqlite database file in the
-    // special "local" folder for your platform.
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}"); 
-
-} 
+}
 
 
 

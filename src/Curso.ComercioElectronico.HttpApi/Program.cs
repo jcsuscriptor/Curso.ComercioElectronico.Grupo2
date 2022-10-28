@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Curso.ComercioElectronico.Application;
 using Curso.ComercioElectronico.Domain;
 using Curso.ComercioElectronico.Infraestructure;
@@ -13,19 +14,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//Configuraciones de Dependencias
-//Agregar conexion a base de datos
-/* builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("ComercioElectronico"));    
-});
- */
 
-builder.Services.AddScoped<ComercioElectronicoDbContext>();
+//Configuraciones de Dependencias
+//Configurar DBContext
+builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
+{
+    var folder = Environment.SpecialFolder.LocalApplicationData;
+    var path = Environment.GetFolderPath(folder);
+    var dbPath = Path.Join(path, builder.Configuration.GetConnectionString("ComercioElectronico"));
+    Debug.WriteLine($"dbPath: {dbPath}");
+
+    options.UseSqlite($"Data Source={dbPath}");
+});
 
 builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
-builder.Services.AddTransient<IMarcaAppService, MarcaAppService>();
+builder.Services.AddTransient<IMarcaAppService, MarcaAppService>(); 
 
+//Utilizar una factoria
+builder.Services.AddScoped<IUnitOfWork>(provider => 
+{
+    var instance = provider.GetService<ComercioElectronicoDbContext>();
+    return instance;
+});
 
 var app = builder.Build();
 
