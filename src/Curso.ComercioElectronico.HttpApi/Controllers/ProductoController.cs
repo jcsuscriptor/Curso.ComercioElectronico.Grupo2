@@ -26,6 +26,21 @@ public class ProductoController : ControllerBase
 
     }
 
+    [HttpGet("list")]
+    public  Task<ListaPaginada<ProductoDto>> GetListAsync([FromQuery]ProductoListInput input)
+    {
+        return productoAppService.GetListAsync(input);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ProductoDto>  GetByIdAsync(int id)
+    {
+        return await productoAppService.GetByIdAsync(id);
+    }
+
+
+    
+
     [HttpPost]
     public async Task<ProductoDto> CreateAsync(ProductoCrearActualizarDto marca)
     {

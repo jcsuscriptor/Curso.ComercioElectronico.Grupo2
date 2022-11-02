@@ -28,7 +28,15 @@ builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
 });
 
 builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
+builder.Services.AddTransient<IProductoRepository, ProductoRepository>(); 
+builder.Services.AddTransient<ITipoProductoRepository, TipoProductoRepository>(); 
+builder.Services.AddTransient<IOrdenRepository, OrdenRepository>(); 
+
+
 builder.Services.AddTransient<IMarcaAppService, MarcaAppService>(); 
+builder.Services.AddTransient<ITipoProductoAppService, TipoProductoAppService>(); 
+builder.Services.AddTransient<IProductoAppService, ProductoAppService>(); 
+builder.Services.AddTransient<IOrdenAppService, OrdenAppService>(); 
 
 //Utilizar una factoria
 builder.Services.AddScoped<IUnitOfWork>(provider => 

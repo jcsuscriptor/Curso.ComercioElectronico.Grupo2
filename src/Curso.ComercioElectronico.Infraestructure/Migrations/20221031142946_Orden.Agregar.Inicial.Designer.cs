@@ -3,6 +3,7 @@ using System;
 using Curso.ComercioElectronico.Infraestructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Curso.ComercioElectronico.Infraestructure.Migrations
 {
     [DbContext(typeof(ComercioElectronicoDbContext))]
-    partial class ComercioElectronicoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221031142946_Orden.Agregar.Inicial")]
+    partial class OrdenAgregarInicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -58,21 +60,6 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("FechaAnulacion")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Observaciones")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
@@ -86,17 +73,8 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("Cantidad")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Observaciones")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("OrdenId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<double>("Precio")
-                        .HasColumnType("REAL");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
@@ -130,8 +108,8 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.Property<string>("Observaciones")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("Precio")
-                        .HasColumnType("REAL");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TipoProductoId")
                         .HasColumnType("INTEGER");
