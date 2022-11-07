@@ -3,7 +3,7 @@ using Curso.ComercioElectronico.Domain;
 
 namespace Curso.ComercioElectronico.Application;
 
-public class OrdenCrearActualizarDto
+public class OrdenCrearDto
 {
     
     [Required]
@@ -14,6 +14,17 @@ public class OrdenCrearActualizarDto
 
     [Required]
     public DateTime Fecha {get;set;}
+
+    public string? Observaciones { get;set;}
+  
+} 
+
+public class OrdenActualizarDto
+{
+    
+    [Required]
+    public OrdenEstado Estado {get;set;}
+
 
     public string? Observaciones { get;set;}
   

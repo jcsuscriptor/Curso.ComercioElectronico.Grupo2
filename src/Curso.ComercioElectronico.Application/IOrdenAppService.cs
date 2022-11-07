@@ -11,9 +11,9 @@ public interface IOrdenAppService
     //ListaPaginada<OrdenDto> GetByClientIdAll(int clientId, int limit=10,int offset=0);
 
 
-    Task<OrdenDto> CreateAsync(OrdenCrearActualizarDto orden);
+    Task<OrdenDto> CreateAsync(OrdenCrearDto orden);
 
-    Task UpdateAsync (int id, OrdenCrearActualizarDto orden);
+    Task UpdateAsync (int id, OrdenActualizarDto orden);
 
     Task<bool> AnularAsync(int ordenId);
 }

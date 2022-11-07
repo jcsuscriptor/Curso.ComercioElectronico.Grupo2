@@ -16,7 +16,7 @@ public class OrdenAppService : IOrdenAppService
         this.productoAppService = productoAppService;
     }
 
-    public async Task<OrdenDto> CreateAsync(OrdenCrearActualizarDto ordenDto)
+    public async Task<OrdenDto> CreateAsync(OrdenCrearDto ordenDto)
     {
 
         //Crear una orden... 
@@ -107,7 +107,7 @@ public class OrdenAppService : IOrdenAppService
         return Task.FromResult(consultaOrdenDto.SingleOrDefault());
     }
 
-    public Task UpdateAsync(int id, OrdenCrearActualizarDto marca)
+    public Task UpdateAsync(int id, OrdenActualizarDto marca)
     {
         throw new NotImplementedException();
     }

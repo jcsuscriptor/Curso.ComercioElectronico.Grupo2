@@ -36,7 +36,7 @@ public class OrdenController : ControllerBase
     
 
     [HttpPost]
-    public async Task<OrdenDto> CreateAsync(OrdenCrearActualizarDto marca)
+    public async Task<OrdenDto> CreateAsync(OrdenCrearDto marca)
     {
 
         return await ordenAppService.CreateAsync(marca);
@@ -44,7 +44,7 @@ public class OrdenController : ControllerBase
     }
 
     [HttpPut]
-    public async Task UpdateAsync(int id, OrdenCrearActualizarDto marca)
+    public async Task UpdateAsync(int id, OrdenActualizarDto marca)
     {
 
         await ordenAppService.UpdateAsync(id, marca);
