@@ -38,8 +38,6 @@ public class MarcaAppService : IMarcaAppService
         marcaCreada.Nombre = marca.Nombre;
         marcaCreada.Id = marca.Id;
 
-        //TODO: Enviar un correo electronica... 
-
         return marcaCreada;
     }
 

@@ -187,10 +187,10 @@ public class ProductoAppService : IProductoAppService
 
     public Task<ProductoDto> GetByIdAsync(int id)
     {
-        var consulta = productoRepository.GetAll();
+        var consulta = productoRepository.GetAllIncluding(x => x.TipoProducto, x => x.Marca);
         consulta = consulta.Where(x => x.Id == id);
 
-        var consulaListaProductosDto = consulta
+        var consultaProductoDto = consulta
                                 .Select(
                                     x => new ProductoDto()
                                     {
@@ -210,7 +210,7 @@ public class ProductoAppService : IProductoAppService
                                     }
                                 );
 
-        return Task.FromResult(consulaListaProductosDto.SingleOrDefault());
+        return Task.FromResult(consultaProductoDto.SingleOrDefault());
     }
 
     public Task UpdateAsync(int id, ProductoCrearActualizarDto marca)

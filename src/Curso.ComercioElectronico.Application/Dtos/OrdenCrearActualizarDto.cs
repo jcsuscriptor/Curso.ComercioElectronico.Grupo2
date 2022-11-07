@@ -8,7 +8,8 @@ public class OrdenCrearActualizarDto
     
     [Required]
     public int ClienteId {get;set;}
-   
+
+    [Required]   
     public virtual ICollection<OrdenItemCrearActualizarDto> Items {get;set;}
 
     [Required]

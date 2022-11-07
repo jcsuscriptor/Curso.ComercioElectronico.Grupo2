@@ -20,7 +20,7 @@ public class ComercioElectronicoContextFactory : IDesignTimeDbContextFactory<Com
         var path = Environment.GetFolderPath(folder);
         var dbPath = Path.Join(path, configuration.GetConnectionString("ComercioElectronico"));
         Debug.WriteLine($"dbPath: {dbPath}");
-
+        Console.WriteLine($"dbPath: {dbPath}");
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
         return new ComercioElectronicoDbContext(optionsBuilder.Options);

@@ -3,18 +3,6 @@ using System.Linq.Expressions;
 
 namespace Curso.ComercioElectronico.Domain;
 
-public class Cliente {
-
-    [Required]
-    public int Id {get;set; }
-
-    [Required]
-    [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
-    public string Nombres {get;set;}
-
-    //TODO: Agregar campos adicionales..
-}
-
 public class Orden
 {
     [Required]
@@ -25,7 +13,7 @@ public class Orden
    
     public virtual Cliente Cliente {get;set;}
 
-    public virtual ICollection<OrdenItem> Items {get;set;}
+    public virtual ICollection<OrdenItem> Items {get;set;} = new List<OrdenItem>();
 
     [Required]
     public DateTime Fecha {get;set;}
