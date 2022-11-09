@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reflection;
 using Curso.ComercioElectronico.Application;
 using Curso.ComercioElectronico.Domain;
 using Curso.ComercioElectronico.Infraestructure;
@@ -31,6 +32,9 @@ builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
 builder.Services.AddInfraestructure(builder.Configuration);
 
 builder.Services.AddApplication(builder.Configuration);
+ 
+
+//builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(ProductoAppService)));
  
 
 //Utilizar una factoria

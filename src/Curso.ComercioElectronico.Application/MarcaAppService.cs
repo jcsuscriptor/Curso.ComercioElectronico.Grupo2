@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Curso.ComercioElectronico.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace Curso.ComercioElectronico.Application;
 
@@ -9,20 +10,28 @@ public class MarcaAppService : IMarcaAppService
 {
     private readonly IMarcaRepository repository;
     private readonly IUnitOfWork unitOfWork;
+    private readonly ILogger<MarcaAppService> logger;
 
-    public MarcaAppService(IMarcaRepository repository, IUnitOfWork unitOfWork)
+    public MarcaAppService(IMarcaRepository repository, IUnitOfWork unitOfWork,
+        ILogger<MarcaAppService> logger)
     {
         this.repository = repository;
         this.unitOfWork = unitOfWork;
+        this.logger = logger;
     }
 
     public async Task<MarcaDto> CreateAsync(MarcaCrearActualizarDto marcaDto)
     {
-        
+        logger.LogInformation("Crear Marca");
+
         //Reglas Validaciones... 
         var existeNombreMarca = await repository.ExisteNombre(marcaDto.Nombre);
         if (existeNombreMarca){
-            throw new ArgumentException($"Ya existe una marca con el nombre {marcaDto.Nombre}");
+            
+            var msg = $"Ya existe una marca con el nombre {marcaDto.Nombre}";
+            logger.LogError(msg);
+
+            throw new ArgumentException(msg);
         }
  
         //Mapeo Dto => Entidad
