@@ -3,15 +3,11 @@ using Curso.ComercioElectronico.Domain;
 
 namespace Curso.ComercioElectronico.Application;
 
- 
-public class MarcaDto
-{
-    [Required]
-    public int Id {get;set;}
+public class ClienteCrearActualizarDto {
 
+ 
     [Required]
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
-    public string Nombre {get;set;}
-}
-
+    public string Nombres {get;set;}
  
+}
