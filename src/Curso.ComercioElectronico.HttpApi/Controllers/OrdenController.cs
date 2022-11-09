@@ -27,7 +27,7 @@ public class OrdenController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<OrdenDto>  GetByIdAsync(int id)
+    public async Task<OrdenDto>  GetByIdAsync(Guid id)
     {
         return await ordenAppService.GetByIdAsync(id);
     }
@@ -44,7 +44,7 @@ public class OrdenController : ControllerBase
     }
 
     [HttpPut]
-    public async Task UpdateAsync(int id, OrdenActualizarDto marca)
+    public async Task UpdateAsync(Guid id, OrdenActualizarDto marca)
     {
 
         await ordenAppService.UpdateAsync(id, marca);
@@ -52,7 +52,7 @@ public class OrdenController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<bool> AnularAsync(int ordenId)
+    public async Task<bool> AnularAsync(Guid ordenId)
     {
 
         return await ordenAppService.AnularAsync(ordenId);

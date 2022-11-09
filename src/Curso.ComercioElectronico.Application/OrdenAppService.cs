@@ -35,7 +35,7 @@ public class OrdenAppService : IOrdenAppService
         //-Siempre y cuando en los ultimos 3 meses tenga compras 
         //Ciertos productos, se puede establecer descuento segun la cantidad de productos comprados
         //2. Mapeos
-        var orden = new Orden();
+        var orden = new Orden(Guid.NewGuid());
         orden.ClienteId = ordenDto.ClienteId;
         orden.Estado = OrdenEstado.Registrada;
         orden.Fecha = ordenDto.Fecha;
@@ -48,7 +48,7 @@ public class OrdenAppService : IOrdenAppService
             //2. Si no existe producto, agregar otro producto. (Requiere mayor logica) 
             var productoDto = await productoAppService.GetByIdAsync(item.ProductId);
             if (productoDto != null){
-                var ordenItem = new OrdenItem();
+                var ordenItem = new OrdenItem(Guid.NewGuid());
                 ordenItem.Cantidad = item.Cantidad;
                 ordenItem.Precio = productoDto.Precio;
                 ordenItem.ProductId = productoDto.Id;
@@ -69,7 +69,7 @@ public class OrdenAppService : IOrdenAppService
         return await GetByIdAsync(orden.Id);
     }
 
-    public Task<bool> AnularAsync(int odenId)
+    public Task<bool> AnularAsync(Guid odenId)
     {
         throw new NotImplementedException();
     }
@@ -80,7 +80,7 @@ public class OrdenAppService : IOrdenAppService
 
     }
 
-    public Task<OrdenDto> GetByIdAsync(int id)
+    public Task<OrdenDto> GetByIdAsync(Guid id)
     {
         var consulta = ordenRepository.GetAllIncluding(x => x.Cliente, x => x.Items); //, x => x.Vendedor);
         consulta = consulta.Where(x => x.Id == id);
@@ -112,7 +112,7 @@ public class OrdenAppService : IOrdenAppService
         return Task.FromResult(consultaOrdenDto.SingleOrDefault());
     }
 
-    public Task UpdateAsync(int id, OrdenActualizarDto marca)
+    public Task UpdateAsync(Guid id, OrdenActualizarDto marca)
     {
         throw new NotImplementedException();
     }

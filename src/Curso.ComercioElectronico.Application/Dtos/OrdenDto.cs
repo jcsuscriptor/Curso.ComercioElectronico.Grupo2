@@ -6,7 +6,7 @@ namespace Curso.ComercioElectronico.Application;
 public class OrdenDto
 {
     [Required]
-    public int Id {get;set; }
+    public Guid Id {get;set; }
  
     [Required]
     public int ClienteId {get;set;}
@@ -35,7 +35,7 @@ public class OrdenDto
 public class OrdenItemDto {
 
     [Required]
-    public int Id {get;set; }
+    public Guid Id {get;set; }
 
     [Required]
     public int ProductId {get; set;}

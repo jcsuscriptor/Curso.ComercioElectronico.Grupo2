@@ -35,6 +35,12 @@ public class ComercioElectronicoDbContext : DbContext, IUnitOfWork
             .HasConversion<double>()
             ;
 
+           /*
+            modelBuilder.Entity<OrdenItem>()
+            .Property(e => e.Id)
+            .HasConversion<string>();
+          */
+
           //TODO: Conversion. Ejemplos. Estado. ??
           modelBuilder.Entity<OrdenItem>()
             .Property(e => e.Precio)

@@ -12,6 +12,8 @@ dotnet ef migrations add InitialCreate
 ## Commado para actualizar nuestra base de datos, con las migraciones
 dotnet ef database update
 
+## generar scripts desde un migracion en adelante
+dotnet ef migrations script AddNewTables
 
 # Si se trabaja con visual studio
 

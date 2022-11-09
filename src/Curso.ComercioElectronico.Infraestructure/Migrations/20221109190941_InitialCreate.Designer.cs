@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Curso.ComercioElectronico.Infraestructure.Migrations
 {
     [DbContext(typeof(ComercioElectronicoDbContext))]
-    [Migration("20221031150342_Orden.Agregar.Campos")]
-    partial class OrdenAgregarCampos
+    [Migration("20221109190941_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,9 +53,9 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
 
             modelBuilder.Entity("Curso.ComercioElectronico.Domain.Orden", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("INTEGER");
@@ -84,9 +84,9 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
 
             modelBuilder.Entity("Curso.ComercioElectronico.Domain.OrdenItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("Cantidad")
                         .HasColumnType("INTEGER");
@@ -97,15 +97,18 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.Property<int>("OrdenId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Precio")
+                    b.Property<Guid>("OrdenId1")
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("Precio")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrdenId");
+                    b.HasIndex("OrdenId1");
 
                     b.HasIndex("ProductId");
 
@@ -132,8 +135,8 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.Property<string>("Observaciones")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Precio")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Precio")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("TipoProductoId")
                         .HasColumnType("INTEGER");
@@ -178,7 +181,7 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                 {
                     b.HasOne("Curso.ComercioElectronico.Domain.Orden", "Orden")
                         .WithMany("Items")
-                        .HasForeignKey("OrdenId")
+                        .HasForeignKey("OrdenId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

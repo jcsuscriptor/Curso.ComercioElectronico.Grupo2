@@ -5,8 +5,14 @@ namespace Curso.ComercioElectronico.Domain;
 
 public class Orden
 {
+
+    public Orden(Guid id){
+        this.Id = id;
+    }
+
+
     [Required]
-    public int Id {get;set; }
+    public Guid Id {get;set; }
  
     [Required]
     public int ClienteId {get;set;}
@@ -38,8 +44,12 @@ public class Orden
 
 public class OrdenItem {
 
+    public OrdenItem(Guid id){
+        this.Id = id;
+    }
+
     [Required]
-    public int Id {get;set; }
+    public Guid Id {get;set; }
 
     [Required]
     public int ProductId {get; set;}

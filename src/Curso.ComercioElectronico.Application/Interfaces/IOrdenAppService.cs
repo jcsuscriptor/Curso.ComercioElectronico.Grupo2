@@ -4,7 +4,7 @@ namespace Curso.ComercioElectronico.Application;
 
 public interface IOrdenAppService
 {
-    Task<OrdenDto> GetByIdAsync(int id);
+    Task<OrdenDto> GetByIdAsync(Guid id);
 
     ListaPaginada<OrdenDto> GetAll(int limit=10,int offset=0);
 
@@ -13,8 +13,8 @@ public interface IOrdenAppService
 
     Task<OrdenDto> CreateAsync(OrdenCrearDto orden);
 
-    Task UpdateAsync (int id, OrdenActualizarDto orden);
+    Task UpdateAsync (Guid id, OrdenActualizarDto orden);
 
-    Task<bool> AnularAsync(int ordenId);
+    Task<bool> AnularAsync(Guid ordenId);
 }
 
