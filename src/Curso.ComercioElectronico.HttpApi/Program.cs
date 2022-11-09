@@ -27,19 +27,11 @@ builder.Services.AddDbContext<ComercioElectronicoDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}");
 });
 
-builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
-builder.Services.AddTransient<IProductoRepository, ProductoRepository>(); 
-builder.Services.AddTransient<ITipoProductoRepository, TipoProductoRepository>(); 
-builder.Services.AddTransient<IOrdenRepository, OrdenRepository>(); 
-builder.Services.AddTransient<IClienteRepository, ClienteRepository>(); 
 
+builder.Services.AddInfraestructure(builder.Configuration);
 
-builder.Services.AddTransient<IMarcaAppService, MarcaAppService>(); 
-builder.Services.AddTransient<ITipoProductoAppService, TipoProductoAppService>(); 
-builder.Services.AddTransient<IProductoAppService, ProductoAppService>(); 
-builder.Services.AddTransient<IOrdenAppService, OrdenAppService>(); 
-builder.Services.AddTransient<IClienteAppService, ClienteAppService>(); 
-
+builder.Services.AddApplication(builder.Configuration);
+ 
 
 //Utilizar una factoria
 builder.Services.AddScoped<IUnitOfWork>(provider => 

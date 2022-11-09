@@ -1,4 +1,5 @@
 using Curso.ComercioElectronico.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace Curso.ComercioElectronico.Application;
 
@@ -6,18 +7,22 @@ public class OrdenAppService : IOrdenAppService
 {
     private readonly IOrdenRepository ordenRepository;
     private readonly IProductoAppService productoAppService;
+    private readonly ILogger<OrdenAppService> logger;
 
     public OrdenAppService(
         IOrdenRepository ordenRepository,
         //IProductoRepository productoRepository,
-        IProductoAppService productoAppService)
+        IProductoAppService productoAppService,
+        ILogger<OrdenAppService> logger )
     {
         this.ordenRepository = ordenRepository;
         this.productoAppService = productoAppService;
+        this.logger = logger;
     }
 
     public async Task<OrdenDto> CreateAsync(OrdenCrearDto ordenDto)
     {
+        logger.LogInformation("Crear Orden");
 
         //Crear una orden... 
         //1. Validaciones...
