@@ -22,12 +22,9 @@ public static class ApplicationServiceCollectionExtensions
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         //Configurar los validaciones
-        /* services.AddScoped<IValidator<MarcaCrearActualizarDto>, 
-                        MarcaCrearActualizarDtoValidator>();
- */
         services.AddScoped<IValidator<MarcaCrearActualizarDto>, 
-                        NuevoMarcaCrearActualizarDtoValidator>();
-
+                        MarcaCrearActualizarDtoValidator>();
+ 
 
         //Configurar todas las validaciones
         //services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
