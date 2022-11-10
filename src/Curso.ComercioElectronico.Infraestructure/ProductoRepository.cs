@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Curso.ComercioElectronico.Infraestructure;
 
-public class ProductoRepository : EfRepository<Producto>, IProductoRepository
+public class ProductoRepository : EfRepository<Producto,int>, IProductoRepository
 {
     public ProductoRepository(ComercioElectronicoDbContext context) : base(context)
     {

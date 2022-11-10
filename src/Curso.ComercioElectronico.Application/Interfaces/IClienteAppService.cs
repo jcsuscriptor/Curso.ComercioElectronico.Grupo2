@@ -11,7 +11,7 @@ public interface IClienteAppService
 
     Task<ClienteDto> CreateAsync(ClienteCrearActualizarDto clienteDto);
 
-    Task UpdateAsync (int id, ClienteCrearActualizarDto clienteDto);
+    Task UpdateAsync (Guid clienteId, ClienteCrearActualizarDto clienteDto);
 
-    Task<bool> DeleteAsync(int clienteId);
+    Task<bool> DeleteAsync(Guid clienteId);
 }

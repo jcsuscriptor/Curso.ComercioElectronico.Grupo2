@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Curso.ComercioElectronico.Infraestructure;
  
 
-public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity : class 
+public abstract class EfRepository<TEntity,TEntityId> : IRepository<TEntity,TEntityId> where TEntity : class 
 {
     protected readonly ComercioElectronicoDbContext _context;
 
@@ -18,7 +18,7 @@ public abstract class EfRepository<TEntity> : IRepository<TEntity> where TEntity
         _context = context;
     }
 
-    public virtual async Task<TEntity> GetByIdAsync(int id)
+    public virtual async Task<TEntity> GetByIdAsync(TEntityId id)
     {
         return await _context.Set<TEntity>().FindAsync(id);
     }

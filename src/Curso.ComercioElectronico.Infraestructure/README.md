@@ -13,7 +13,7 @@ dotnet ef migrations add InitialCreate
 dotnet ef database update
 
 ## generar scripts desde un migracion en adelante
-dotnet ef migrations script AddNewTables
+dotnet ef migrations script DesdeMigracionX
 
 # Si se trabaja con visual studio
 

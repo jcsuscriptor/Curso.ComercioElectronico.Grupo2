@@ -1,6 +1,6 @@
 namespace Curso.ComercioElectronico.Domain;
 
-public interface IMarcaRepository :  IRepository<Marca,int> {
+public interface ITipoProductoRepository :  IRepository<TipoProducto,int> {
 
 
     Task<bool> ExisteNombre(string nombre);

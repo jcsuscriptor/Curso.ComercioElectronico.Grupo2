@@ -5,7 +5,7 @@ namespace Curso.ComercioElectronico.Domain;
 public class Cliente {
 
     [Required]
-    public int Id {get;set; }
+    public Guid Id {get;set; }
 
     [Required]
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
