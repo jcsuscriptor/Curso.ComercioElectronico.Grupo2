@@ -24,6 +24,8 @@ public class OrdenAppService : IOrdenAppService
     {
         logger.LogInformation("Crear Orden");
 
+        
+
         //Crear una orden... 
         //1. Validaciones...
         //1.1. Stock.  

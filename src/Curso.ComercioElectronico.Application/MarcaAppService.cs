@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Curso.ComercioElectronico.Domain;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace Curso.ComercioElectronico.Application;
@@ -10,13 +11,16 @@ public class MarcaAppService : IMarcaAppService
 {
     private readonly IMarcaRepository repository;
     private readonly IUnitOfWork unitOfWork;
+    private readonly IValidator<MarcaCrearActualizarDto> validator;
     private readonly ILogger<MarcaAppService> logger;
 
     public MarcaAppService(IMarcaRepository repository, IUnitOfWork unitOfWork,
+        IValidator<MarcaCrearActualizarDto> validator,
         ILogger<MarcaAppService> logger)
     {
         this.repository = repository;
         this.unitOfWork = unitOfWork;
+        this.validator = validator;
         this.logger = logger;
     }
 
@@ -25,6 +29,24 @@ public class MarcaAppService : IMarcaAppService
         logger.LogInformation("Crear Marca");
 
         //Reglas Validaciones... 
+        //Opcion 1. Manual
+        //validator
+        var validationResult = await validator.ValidateAsync(marcaDto);
+        if (!validationResult.IsValid){
+            
+            var listaErrores = validationResult.Errors.Select(
+                    x => x.ErrorMessage
+            );
+
+            var erroresString = string.Join(" - ",listaErrores); 
+            throw new ArgumentException(erroresString);
+        } 
+
+        //Opcion 2. 
+        //await validator.ValidateAndThrowAsync(marcaDto);
+
+
+        
         var existeNombreMarca = await repository.ExisteNombre(marcaDto.Nombre);
         if (existeNombreMarca){
             

@@ -11,5 +11,6 @@ public class Cliente {
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
     public string Nombres {get;set;}
 
-    //TODO: Agregar campos adicionales..
+    //TODO: Agregar campos adicionales. 
+     
 }

@@ -1,5 +1,7 @@
 BEGIN TRANSACTION;
 
+
+
 CREATE TABLE "ef_temp_Ordenes" (
     "Id" TEXT NOT NULL CONSTRAINT "PK_Ordenes" PRIMARY KEY,
     "ClienteId" TEXT NOT NULL,
