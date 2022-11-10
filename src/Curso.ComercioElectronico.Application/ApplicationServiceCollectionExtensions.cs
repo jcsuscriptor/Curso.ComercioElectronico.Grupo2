@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +21,17 @@ public static class ApplicationServiceCollectionExtensions
         //Configurar la inyección de todos los profile que existen en un Assembly
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-       
+        //Configurar los validaciones
+        /* services.AddScoped<IValidator<MarcaCrearActualizarDto>, 
+                        MarcaCrearActualizarDtoValidator>();
+ */
+        services.AddScoped<IValidator<MarcaCrearActualizarDto>, 
+                        NuevoMarcaCrearActualizarDtoValidator>();
+
+
+        //Configurar todas las validaciones
+        //services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
         return services;
 
     }
