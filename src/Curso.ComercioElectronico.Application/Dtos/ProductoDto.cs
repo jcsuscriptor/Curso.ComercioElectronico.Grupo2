@@ -20,13 +20,13 @@ public class ProductoDto
     
 
     [Required]
-    public int MarcaId {get;set;}
+    public string MarcaId {get;set;}
 
     public string  Marca {get; set; }
 
 
     [Required]
-    public int TipoProductoId {get;set;}
+    public string TipoProductoId {get;set;}
 
     public string TipoProducto {get;set;}
 

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Curso.ComercioElectronico.Domain;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -11,42 +12,32 @@ public class MarcaAppService : IMarcaAppService
 {
     private readonly IMarcaRepository repository;
     private readonly IUnitOfWork unitOfWork;
-    private readonly IValidator<MarcaCrearActualizarDto> validator;
+    private readonly IValidator<MarcaCrearDto> validatorCrear;
+    private readonly IValidator<MarcaActualizarDto> validatorActualizar;
+    private readonly IMapper mapper;
     private readonly ILogger<MarcaAppService> logger;
 
     public MarcaAppService(IMarcaRepository repository, IUnitOfWork unitOfWork,
-        IValidator<MarcaCrearActualizarDto> validator,
+        IValidator<MarcaCrearDto> validatorCrear,
+        IValidator<MarcaActualizarDto> validatorActualizar,
+        IMapper mapper,
         ILogger<MarcaAppService> logger)
     {
         this.repository = repository;
         this.unitOfWork = unitOfWork;
-        this.validator = validator;
+        this.validatorCrear = validatorCrear;
+        this.validatorActualizar = validatorActualizar;
+        this.mapper = mapper;
         this.logger = logger;
     }
 
-    public async Task<MarcaDto> CreateAsync(MarcaCrearActualizarDto marcaDto)
+    public async Task<MarcaDto> CreateAsync(MarcaCrearDto marcaDto)
     {
         logger.LogInformation("Crear Marca");
 
         //Reglas Validaciones... 
-        //Opcion 1. Manual
-        //validator
-        var validationResult = await validator.ValidateAsync(marcaDto);
-        if (!validationResult.IsValid){
-            
-            var listaErrores = validationResult.Errors.Select(
-                    x => x.ErrorMessage
-            );
-
-            var erroresString = string.Join(" - ",listaErrores); 
-            throw new ArgumentException(erroresString);
-        } 
-
-        //Opcion 2. 
-        //await validator.ValidateAndThrowAsync(marcaDto);
-
-
-        
+        await validatorCrear.ValidateAndThrowAsync(marcaDto);
+ 
         var existeNombreMarca = await repository.ExisteNombre(marcaDto.Nombre);
         if (existeNombreMarca){
             
@@ -55,25 +46,25 @@ public class MarcaAppService : IMarcaAppService
 
             throw new ArgumentException(msg);
         }
- 
-        //Mapeo Dto => Entidad
-        var marca = new Marca();
-        marca.Nombre = marcaDto.Nombre;
+
+        var marca = mapper.Map<Marca>(marcaDto);
  
         //Persistencia objeto
         marca = await repository.AddAsync(marca);
         await unitOfWork.SaveChangesAsync();
 
         //Mapeo Entidad => Dto
-        var marcaCreada = new MarcaDto();
-        marcaCreada.Nombre = marca.Nombre;
-        marcaCreada.Id = marca.Id;
-
-        return marcaCreada;
+        var marcaCreada = mapper.Map<MarcaDto>(marca);
+        return marcaCreada; 
+       
     }
 
-    public async Task UpdateAsync(int id, MarcaCrearActualizarDto marcaDto)
+    public async Task UpdateAsync(string id, MarcaActualizarDto marcaDto)
     {
+        //Reglas Validaciones... 
+        await validatorActualizar.ValidateAndThrowAsync(marcaDto);
+
+
         var marca = await repository.GetByIdAsync(id);
         if (marca == null){
             throw new ArgumentException($"La marca con el id: {id}, no existe");
@@ -94,7 +85,7 @@ public class MarcaAppService : IMarcaAppService
         return;
     }
 
-    public async Task<bool> DeleteAsync(int marcaId)
+    public async Task<bool> DeleteAsync(string marcaId)
     {
         //Reglas Validaciones... 
         var marca = await repository.GetByIdAsync(marcaId);
@@ -102,15 +93,15 @@ public class MarcaAppService : IMarcaAppService
             throw new ArgumentException($"La marca con el id: {marcaId}, no existe");
         }
 
-        repository.Delete(marca);
+        await repository.DeleteAsync(marca);
         await repository.UnitOfWork.SaveChangesAsync();
 
         return true;
     }
 
-    public ICollection<MarcaDto> GetAll()
+    public async Task<ICollection<MarcaDto>> GetAllAsync()
     {
-        var marcaList = repository.GetAll();
+        var marcaList = await repository.GetAllAsync();
 
         var marcaListDto =  from m in marcaList
                             select new MarcaDto(){
@@ -121,6 +112,12 @@ public class MarcaAppService : IMarcaAppService
         return marcaListDto.ToList();
     }
 
-    
+    public async Task<MarcaDto> GetByIdAsync(string id)
+    {
+        var entidad = await repository.GetByIdAsync(id);
+
+        var entidadDto = mapper.Map<MarcaDto>(entidad);
+        return entidadDto;
+    }
 }
  

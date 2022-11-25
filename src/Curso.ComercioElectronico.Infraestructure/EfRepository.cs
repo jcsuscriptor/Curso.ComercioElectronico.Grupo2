@@ -24,7 +24,7 @@ public abstract class EfRepository<TEntity,TEntityId> : IRepository<TEntity,TEnt
     }
 
    
-    public virtual IQueryable<TEntity> GetAll(bool asNoTracking = true)
+    public virtual IQueryable<TEntity> GetQueryable(bool asNoTracking = true)
     {
         if (asNoTracking)
             return _context.Set<TEntity>().AsNoTracking();
@@ -40,23 +40,24 @@ public abstract class EfRepository<TEntity,TEntityId> : IRepository<TEntity,TEnt
         return entity;
     }
 
-    public virtual async  Task UpdateAsync(TEntity entity)
+    public virtual   Task UpdateAsync(TEntity entity)
     {
-          _context.Update(entity);
-        
-        return;
+        _context.Update(entity);
+
+        return Task.CompletedTask;
     }
 
-    public virtual void  Delete(TEntity entity)
+    public virtual  Task DeleteAsync(TEntity entity)
     {
         _context.Set<TEntity>().Remove(entity);
-        
+
+        return Task.CompletedTask; 
  
     }
  
     public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
     {
-        IQueryable<TEntity> queryable = GetAll();
+        IQueryable<TEntity> queryable = GetQueryable();
         foreach (Expression<Func<TEntity, object>> includeProperty in includeProperties)
         {
             queryable = queryable.Include<TEntity, object>(includeProperty);
@@ -65,4 +66,11 @@ public abstract class EfRepository<TEntity,TEntityId> : IRepository<TEntity,TEnt
         return queryable;
     }
 
+    public async Task<ICollection<TEntity>> GetAllAsync(bool asNoTracking = true)
+    {
+        if (asNoTracking)
+            return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
+        else
+            return await _context.Set<TEntity>().ToListAsync();
+    }
 }

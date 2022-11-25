@@ -19,14 +19,14 @@ public class MarcaController : ControllerBase
     }
 
     [HttpGet]
-    public ICollection<MarcaDto> GetAll()
+    public async Task<ICollection<MarcaDto>> GetAllAsync()
     {
 
-        return marcaAppService.GetAll();
+        return await marcaAppService.GetAllAsync();
     }
 
     [HttpPost]
-    public async Task<MarcaDto> CreateAsync(MarcaCrearActualizarDto marca)
+    public async Task<MarcaDto> CreateAsync(MarcaCrearDto marca)
     {
 
         return await marcaAppService.CreateAsync(marca);
@@ -34,7 +34,7 @@ public class MarcaController : ControllerBase
     }
 
     [HttpPut]
-    public async Task UpdateAsync(int id, MarcaCrearActualizarDto marca)
+    public async Task UpdateAsync(string id, MarcaActualizarDto marca)
     {
 
         await marcaAppService.UpdateAsync(id, marca);
@@ -42,7 +42,7 @@ public class MarcaController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<bool> DeleteAsync(int marcaId)
+    public async Task<bool> DeleteAsync(string marcaId)
     {
 
         return await marcaAppService.DeleteAsync(marcaId);

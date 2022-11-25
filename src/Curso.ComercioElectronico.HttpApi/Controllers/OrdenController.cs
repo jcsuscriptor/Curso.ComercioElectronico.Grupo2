@@ -19,10 +19,10 @@ public class OrdenController : ControllerBase
     }
 
     [HttpGet]
-    public ListaPaginada<OrdenDto> GetAll(int limit=10,int offset=0)
+    public async Task<ListaPaginada<OrdenDto>> GetListAsync(OrdenListInput input)
     {
 
-        return ordenAppService.GetAll(limit,offset);
+        return await ordenAppService.GetListAsync(input);
 
     }
 

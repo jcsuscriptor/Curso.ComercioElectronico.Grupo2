@@ -14,16 +14,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
- 
+
 
 builder.Services.AddInfraestructure(builder.Configuration);
 
 builder.Services.AddApplication(builder.Configuration);
- 
+
 
 //builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(ProductoAppService)));
- 
- 
+
+
+// Add CORS
+builder.Services.AddCors();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +39,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Politica global CORS Middleware  
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // Permitir cualquier origen
+    .AllowCredentials());
+
 
 app.UseAuthorization();
 

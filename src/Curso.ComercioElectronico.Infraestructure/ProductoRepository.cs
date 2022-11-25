@@ -13,7 +13,7 @@ public class ProductoRepository : EfRepository<Producto,int>, IProductoRepositor
     public async Task<ICollection<Producto>> GetListAsync(IList<int> listaIds, bool asNoTracking = true)
     {
         //GetAll, se ejecuta el linq???
-        var consulta = GetAll(asNoTracking);
+        var consulta = this.GetQueryable(asNoTracking);
 
         consulta = consulta.Where(
                 x => listaIds.Contains(x.Id)

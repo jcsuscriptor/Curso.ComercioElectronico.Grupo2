@@ -6,14 +6,17 @@ using Curso.ComercioElectronico.Domain;
 
 public class ConfiguracionesMapeoProfile : Profile
 {
-    //TipoProductoCrearActualizarDto => TipoProducto
-    //TipoProducto => TipoProductoDto
+     
     public ConfiguracionesMapeoProfile()
     {
-        CreateMap<TipoProductoCrearActualizarDto, TipoProducto>();
+        CreateMap<TipoProductoCrearDto, TipoProducto>();
+        CreateMap<TipoProductoActualizarDto, TipoProducto>();
         CreateMap<TipoProducto, TipoProductoDto>();
 
-        //TODO: Agregar otros mapeos que se requieren...
+        CreateMap<MarcaCrearDto, Marca>();
+        CreateMap<MarcaActualizarDto, Marca>();
+        CreateMap<Marca, MarcaDto>();
+
 
     }
 }

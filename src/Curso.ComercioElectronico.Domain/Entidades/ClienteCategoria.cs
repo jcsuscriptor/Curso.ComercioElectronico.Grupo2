@@ -2,10 +2,9 @@
 
 namespace Curso.ComercioElectronico.Domain;
 
+public class ClienteCategoria {
 
-public class Marca
-{
-    public Marca(string id, string nombre)
+    public ClienteCategoria(string id, string nombre)
     {
         this.Id = id;
         this.Nombre = nombre;
@@ -14,14 +13,12 @@ public class Marca
     [Required]
     [StringLength(DominioConstantes.ID_MAXIMO)]
     [RegularExpression(DominioConstantes.ExpressionRegular.ALFANUMERICOS)]
-    public string Id {get;set;}
+    public string Id { get; set; }
 
     [Required]
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
-    public string Nombre {get;set;}
+    public string Nombre { get; set; }
 
+    [Range(0,100)]
+    public long? Descuento { get; set; }
 }
-
-
-
-

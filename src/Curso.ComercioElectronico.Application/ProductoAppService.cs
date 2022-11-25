@@ -1,4 +1,7 @@
+using AutoMapper;
 using Curso.ComercioElectronico.Domain;
+using FluentValidation;
+using Microsoft.Extensions.Logging;
 
 namespace Curso.ComercioElectronico.Application;
 
@@ -7,28 +10,37 @@ public class ProductoAppService : IProductoAppService
     private readonly IProductoRepository productoRepository;
     private readonly IMarcaRepository marcaRepository;
     private readonly ITipoProductoRepository tipoProductoRepository;
+    private readonly IValidator<ProductoCrearActualizarDto> validator;
+    private readonly IMapper mapper;
+    private readonly ILogger<ProductoAppService> logger;
 
     public ProductoAppService(IProductoRepository productoRepository,
             IMarcaRepository marcaRepository,
-            ITipoProductoRepository tipoProductoRepository)
+            ITipoProductoRepository tipoProductoRepository,
+            IValidator<ProductoCrearActualizarDto> validator,
+            IMapper mapper,
+            ILogger<ProductoAppService> logger)
     {
         this.productoRepository = productoRepository;
         this.marcaRepository = marcaRepository;
         this.tipoProductoRepository = tipoProductoRepository;
+        this.validator = validator;
+        this.mapper = mapper;
+        this.logger = logger;
     }
 
     public async Task<ProductoDto> CreateAsync(ProductoCrearActualizarDto productoDto)
     {
 
-        //Mapeo Dto => Entidad
-        var producto = new Producto();
-        producto.Caducidad = productoDto.Caducidad;
-        producto.MarcaId = productoDto.MarcaId;
-        producto.Nombre = productoDto.Nombre;
-        producto.Observaciones = productoDto.Observaciones;
-        producto.Precio = productoDto.Precio;
-        producto.TipoProductoId = productoDto.TipoProductoId;
+        logger.LogInformation("Crear Producto");
 
+        //Reglas Validaciones... 
+        await validator.ValidateAndThrowAsync(productoDto);
+
+
+        //Mapeo Dto => Entidad
+        var producto = mapper.Map<Producto>(productoDto);
+ 
         //Persistencia objeto
         producto = await productoRepository.AddAsync(producto);
         await productoRepository.UnitOfWork.SaveChangesAsync();
@@ -36,96 +48,7 @@ public class ProductoAppService : IProductoAppService
         return await GetByIdAsync(producto.Id);
     }
 
-    public Task<bool> DeleteAsync(int marcaId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public ListaPaginada<ProductoDto> GetAll(int limit = 10, int offset = 0)
-    {
-        //Lista.
-        //Opcion 1 
-        var consulta = productoRepository.GetAllIncluding(x => x.Marca,
-                            x => x.TipoProducto);
-
-
-        //Opcion 2. Se puede utilizar join, cuando no tiene propiedades de navegacion
-        //en sus objetos.       
-        var consultaJoin = from p in productoRepository.GetAll()
-                           join m in marcaRepository.GetAll()
-                           on p.MarcaId equals m.Id
-                           join tp in tipoProductoRepository.GetAll()
-                           on p.TipoProductoId equals tp.Id
-                           select p
-                           ;
-
-        //Opcion 3. Utilizar Include. No, para evitar acoplamiento con Entity Framework
-        //en la capa de aplicacion, se asume que tenemos repositorios, que permite tener
-        //una abstraccion de entity framework.
-
-
-
-        //1. Ejecuatar linq. Total registros
-        var total = consulta.Count();
-        //var total = productoRepository.GetAll().Count();
-
-        //Opcion 2.
-        var totalOpcion2 = consultaJoin.Count();
-
-        //2. Obtener el listado paginado..
-        var consulaListaProductosDto = consulta.Skip(offset)
-                                .Take(limit)
-                                .Select(
-                                    x => new ProductoDto()
-                                    {
-                                        Id = x.Id,
-                                        Caducidad = x.Caducidad,
-                                        //Utilizar propiedad navegacion,
-                                        // para obtener informacion de una clase relacionada
-                                        Marca = x.Marca.Nombre,
-                                        MarcaId = x.MarcaId,
-                                        Nombre = x.Nombre,
-                                        Observaciones = x.Observaciones,
-                                        Precio = x.Precio,
-                                        //Utilizar propiedad navegacion,
-                                        // para obtener informacion de una clase relacionada
-                                        TipoProducto = x.TipoProducto.Nombre,
-                                        TipoProductoId = x.TipoProductoId
-                                    }
-                                );
-
-        //Opcion 2. 
-        var consulaListaProductosJoinDto = consultaJoin.Skip(offset)
-                                .Take(limit)
-                                .Select(
-                                    x => new ProductoDto()
-                                    {
-                                        Id = x.Id,
-                                        Caducidad = x.Caducidad,
-                                        //Utilizar propiedad navegacion,
-                                        // para obtener informacion de una clase relacionada
-                                        Marca = x.Marca.Nombre,
-                                        MarcaId = x.MarcaId,
-                                        Nombre = x.Nombre,
-                                        Observaciones = x.Observaciones,
-                                        Precio = x.Precio,
-                                        //Utilizar propiedad navegacion,
-                                        // para obtener informacion de una clase relacionada
-                                        TipoProducto = x.TipoProducto.Nombre,
-                                        TipoProductoId = x.TipoProductoId
-                                    }
-                                );
-
-
-
-        var resultado = new ListaPaginada<ProductoDto>();
-        resultado.Total = total;
-        resultado.Lista = consulaListaProductosDto.ToList();
-
-        return resultado;
-
-    }
-
+    
 
     public async Task<ListaPaginada<ProductoDto>> GetListAsync(ProductoListInput input){
 
@@ -133,11 +56,11 @@ public class ProductoAppService : IProductoAppService
                             x => x.TipoProducto);
   
         //Aplicar filtros
-        if (input.TipoProductoId.HasValue){
+        if (!string.IsNullOrEmpty(input.TipoProductoId)){
           consulta = consulta.Where(x => x.TipoProductoId == input.TipoProductoId);
         }
 
-        if (input.MarcaId.HasValue){
+        if (!string.IsNullOrEmpty(input.MarcaId)){
           consulta = consulta.Where(x => x.MarcaId == input.MarcaId);
         }
 
@@ -179,7 +102,7 @@ public class ProductoAppService : IProductoAppService
        
         var resultado = new ListaPaginada<ProductoDto>();
         resultado.Total = total;
-        resultado.Lista = consulaListaProductosDto.ToList();
+        resultado.Lista = await consulaListaProductosDto.ToAsyncEnumerable().ToListAsync();
 
         return resultado;
 
@@ -213,9 +136,43 @@ public class ProductoAppService : IProductoAppService
         return Task.FromResult(consultaProductoDto.SingleOrDefault());
     }
 
-    public Task UpdateAsync(int id, ProductoCrearActualizarDto marca)
+    public async Task UpdateAsync(int id, ProductoCrearActualizarDto productoDto)
     {
-        throw new NotImplementedException();
+        //Reglas Validaciones... 
+        await validator.ValidateAndThrowAsync(productoDto);
+
+
+        var producto = await productoRepository.GetByIdAsync(id);
+        if (producto == null)
+        {
+            throw new ArgumentException($"La entidad con el id: {id}, no existe");
+        }
+         
+        //Mapeo 
+        producto = mapper.Map(productoDto,producto);
+   
+        //Persistencia objeto
+        await productoRepository.UpdateAsync(producto);
+        await productoRepository.UnitOfWork.SaveChangesAsync();
+
+        return;
     }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        //Reglas Validaciones.
+
+        var entidad = await productoRepository.GetByIdAsync(id);
+        if (entidad == null)
+        {
+            throw new ArgumentException($"La entidad con el id: {id}, no existe");
+        }
+
+        await productoRepository.DeleteAsync(entidad);
+        await productoRepository.UnitOfWork.SaveChangesAsync();
+
+        return true;
+    }
+
 }
 

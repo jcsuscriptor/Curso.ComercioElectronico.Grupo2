@@ -18,15 +18,8 @@ public class ProductoController : ControllerBase
         this.productoAppService = productoAppService;
     }
 
+   
     [HttpGet]
-    public ListaPaginada<ProductoDto> GetAll(int limit=10,int offset=0)
-    {
-
-        return productoAppService.GetAll(limit,offset);
-
-    }
-
-    [HttpGet("list")]
     public  Task<ListaPaginada<ProductoDto>> GetListAsync([FromQuery]ProductoListInput input)
     {
         return productoAppService.GetListAsync(input);

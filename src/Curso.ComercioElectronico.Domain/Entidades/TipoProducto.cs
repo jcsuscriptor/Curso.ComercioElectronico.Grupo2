@@ -4,8 +4,17 @@ namespace Curso.ComercioElectronico.Domain;
 
 public class TipoProducto
 {
+    public TipoProducto(string id,string nombre)
+    {
+        this.Id = id;
+        this.Nombre = nombre;
+    }
+
+
     [Required]
-    public int Id {get;set;}
+    [StringLength(DominioConstantes.ID_MAXIMO)]
+    [RegularExpression(DominioConstantes.ExpressionRegular.ALFANUMERICOS)]
+    public string Id {get;set;}
 
     [Required]
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]

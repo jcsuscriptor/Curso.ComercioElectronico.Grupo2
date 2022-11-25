@@ -6,13 +6,14 @@ namespace Curso.ComercioElectronico.Application;
 
 public interface IMarcaAppService
 {
+    Task<MarcaDto> GetByIdAsync(string id);
 
-    ICollection<MarcaDto> GetAll();
+    Task<ICollection<MarcaDto>> GetAllAsync();
 
-    Task<MarcaDto> CreateAsync(MarcaCrearActualizarDto marca);
+    Task<MarcaDto> CreateAsync(MarcaCrearDto marca);
 
-    Task UpdateAsync (int id, MarcaCrearActualizarDto marca);
+    Task UpdateAsync (string id, MarcaActualizarDto marca);
 
-    Task<bool> DeleteAsync(int marcaId);
+    Task<bool> DeleteAsync(string marcaId);
 }
  

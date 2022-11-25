@@ -6,11 +6,9 @@ public interface IOrdenAppService
 {
     Task<OrdenDto> GetByIdAsync(Guid id);
 
-    ListaPaginada<OrdenDto> GetAll(int limit=10,int offset=0);
-
-    //ListaPaginada<OrdenDto> GetByClientIdAll(int clientId, int limit=10,int offset=0);
-
-
+    
+    Task<ListaPaginada<OrdenDto>> GetListAsync(OrdenListInput input);
+ 
     Task<OrdenDto> CreateAsync(OrdenCrearDto orden);
 
     Task UpdateAsync (Guid id, OrdenActualizarDto orden);

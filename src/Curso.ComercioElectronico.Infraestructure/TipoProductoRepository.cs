@@ -4,31 +4,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Curso.ComercioElectronico.Infraestructure;
 
-public class TipoProductoRepository : EfRepository<TipoProducto,int>, ITipoProductoRepository
+public class TipoProductoRepository : EfRepository<TipoProducto,string>, ITipoProductoRepository
 {
     public TipoProductoRepository(ComercioElectronicoDbContext context) : base(context)
     {
     }
 
-    public async Task<bool> ExisteNombre(string nombre) {
+    public async Task<bool> ExisteNombre(string nombre, string? idExcluir = null)
+    {
 
-        var resultado = await this._context.Set<TipoProducto>()
-                       .AnyAsync(x => x.Nombre.ToUpper() == nombre.ToUpper());
+        var consulta = this._context.Set<TipoProducto>()
+                        .Where(x => x.Nombre.ToUpper() == nombre.ToUpper());
 
-        return resultado;
-    }
+        if (!string.IsNullOrWhiteSpace(idExcluir)) {
+            consulta = consulta.Where(x => x.Id != idExcluir);
+        }
 
-    public async Task<bool> ExisteNombre(string nombre, int idExcluir)  {
-
-        var query =  this._context.Set<TipoProducto>()
-                       .Where(x => x.Id != idExcluir)
-                       .Where(x => x.Nombre.ToUpper() == nombre.ToUpper())
-                       ;
-
-        var resultado = await query.AnyAsync();
+        var resultado = await consulta.AnyAsync();
 
         return resultado;
-    }
-
+    } 
     
 }

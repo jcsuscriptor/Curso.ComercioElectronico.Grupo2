@@ -23,21 +23,59 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Apellidos")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClienteCategoriaId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Identificacion")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Nombres")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefonos")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteCategoriaId");
+
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("Curso.ComercioElectronico.Domain.ClienteCategoria", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(12)
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("Descuento")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("ClienteCategoria");
                 });
 
             modelBuilder.Entity("Curso.ComercioElectronico.Domain.Marca", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasMaxLength(12)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -119,11 +157,15 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("Caducidad")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MarcaId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MarcaId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -136,8 +178,9 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.Property<double>("Precio")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("TipoProductoId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("TipoProductoId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -150,9 +193,9 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
 
             modelBuilder.Entity("Curso.ComercioElectronico.Domain.TipoProducto", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Id")
+                        .HasMaxLength(12)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -162,6 +205,17 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoProductos");
+                });
+
+            modelBuilder.Entity("Curso.ComercioElectronico.Domain.Cliente", b =>
+                {
+                    b.HasOne("Curso.ComercioElectronico.Domain.ClienteCategoria", "ClienteCategoria")
+                        .WithMany()
+                        .HasForeignKey("ClienteCategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClienteCategoria");
                 });
 
             modelBuilder.Entity("Curso.ComercioElectronico.Domain.Orden", b =>

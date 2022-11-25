@@ -18,11 +18,11 @@ public class ProductoCrearActualizarDto
     
 
     [Required]
-    public int MarcaId {get;set;}
+    public string MarcaId {get;set;}
  
 
     [Required]
-    public int TipoProductoId {get;set;}
+    public string TipoProductoId {get;set;}
 
      
 }  

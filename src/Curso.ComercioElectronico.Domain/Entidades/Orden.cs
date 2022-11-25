@@ -22,7 +22,7 @@ public class Orden
     public virtual ICollection<OrdenItem> Items {get;set;} = new List<OrdenItem>();
 
     [Required]
-    public DateTime Fecha {get;set;}
+    public DateTime Fecha {get;set;} = DateTime.Now;
 
     public DateTime? FechaAnulacion {get;set;}
     
@@ -33,18 +33,47 @@ public class Orden
     public string? Observaciones { get;set;}
 
     [Required]
-    public OrdenEstado Estado {get;set;}
+    public OrdenEstado Estado { get; protected set; } = OrdenEstado.Registrada;
 
     public void AgregarItem(OrdenItem item){
        
         item.Orden = this;
         Items.Add(item); 
     }
+
+    public void EstablecerEstado(OrdenEstado nuevoEstado) {
+
+
+
+        //Reglas de estados.
+        if (nuevoEstado == OrdenEstado.Anulada) {
+            if (Estado != OrdenEstado.Registrada) {
+                throw new ArgumentException($"No se puede establecer el estado {nuevoEstado}");
+            }
+        }
+
+        if (nuevoEstado == OrdenEstado.Entregada ||
+            nuevoEstado == OrdenEstado.Procesada) {
+
+            if (Estado != OrdenEstado.Registrada)
+            {
+                throw new ArgumentException($"No se puede establecer el estado {nuevoEstado}");
+            }
+        }
+        if (nuevoEstado == OrdenEstado.Registrada)
+        {
+           throw new ArgumentException($"No se puede establecer el estado {nuevoEstado}");
+        }
+
+
+        this.Estado = nuevoEstado;
+    }
 }
 
 public class OrdenItem {
 
-    public OrdenItem(Guid id){
+    public OrdenItem(Guid id)
+    {
         this.Id = id;
     }
 

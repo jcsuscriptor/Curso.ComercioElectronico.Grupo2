@@ -20,8 +20,7 @@ public class ClienteAppService : IClienteAppService
       
  
         //Mapeo Dto => Entidad
-        var cliente = new Cliente();
-        cliente.Id = Guid.NewGuid();
+        var cliente = new Cliente(Guid.NewGuid());
         cliente.Nombres = clienteDto.Nombres;
  
         //Persistencia objeto
@@ -41,7 +40,7 @@ public class ClienteAppService : IClienteAppService
         throw new NotImplementedException();
     }
 
-    public ICollection<ClienteDto> GetAll(string buscar, int limit = 10, int offset = 0)
+    public Task<ListaPaginada<ClienteDto>> GetListAsync(string buscar, int limit = 10, int offset = 0)
     {
         throw new NotImplementedException();
     }

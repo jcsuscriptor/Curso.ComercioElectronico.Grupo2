@@ -7,7 +7,7 @@ namespace Curso.ComercioElectronico.Application;
 public interface IClienteAppService
 {
 
-    ICollection<ClienteDto> GetAll(string buscar,int limit=10,int offset=0);
+    Task<ListaPaginada<ClienteDto>> GetListAsync(string buscar, int limit = 10, int offset = 0);
 
     Task<ClienteDto> CreateAsync(ClienteCrearActualizarDto clienteDto);
 

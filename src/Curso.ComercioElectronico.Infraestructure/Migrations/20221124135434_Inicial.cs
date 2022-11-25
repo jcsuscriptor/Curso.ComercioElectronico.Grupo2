@@ -5,29 +5,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Curso.ComercioElectronico.Infraestructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clientes",
+                name: "ClienteCategoria",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nombres = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false)
+                    Id = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Descuento = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.Id);
+                    table.PrimaryKey("PK_ClienteCategoria", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Marcas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
                     Nombre = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
@@ -39,8 +38,7 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                 name: "TipoProductos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 12, nullable: false),
                     Nombre = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
@@ -49,24 +47,23 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ordenes",
+                name: "Clientes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ClienteId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    FechaAnulacion = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Total = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Observaciones = table.Column<string>(type: "TEXT", nullable: true),
-                    Estado = table.Column<int>(type: "INTEGER", nullable: false)
+                    Identificacion = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Nombres = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Apellidos = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Telefonos = table.Column<string>(type: "TEXT", nullable: true),
+                    ClienteCategoriaId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ordenes", x => x.Id);
+                    table.PrimaryKey("PK_Clientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ordenes_Clientes_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "Clientes",
+                        name: "FK_Clientes_ClienteCategoria_ClienteCategoriaId",
+                        column: x => x.ClienteCategoriaId,
+                        principalTable: "ClienteCategoria",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -78,11 +75,12 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "TEXT", maxLength: 80, nullable: false),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false),
                     Precio = table.Column<double>(type: "REAL", nullable: false),
                     Observaciones = table.Column<string>(type: "TEXT", nullable: true),
                     Caducidad = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    MarcaId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TipoProductoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    MarcaId = table.Column<string>(type: "TEXT", nullable: false),
+                    TipoProductoId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,6 +95,29 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                         name: "FK_Productos_TipoProductos_TipoProductoId",
                         column: x => x.TipoProductoId,
                         principalTable: "TipoProductos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ordenes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ClienteId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaAnulacion = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Observaciones = table.Column<string>(type: "TEXT", nullable: true),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ordenes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ordenes_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -129,6 +150,11 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_ClienteCategoriaId",
+                table: "Clientes",
+                column: "ClienteCategoriaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ordenes_ClienteId",
@@ -175,6 +201,9 @@ namespace Curso.ComercioElectronico.Infraestructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoProductos");
+
+            migrationBuilder.DropTable(
+                name: "ClienteCategoria");
         }
     }
 }

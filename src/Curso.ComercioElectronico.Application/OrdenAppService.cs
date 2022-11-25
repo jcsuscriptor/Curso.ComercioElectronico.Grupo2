@@ -39,7 +39,7 @@ public class OrdenAppService : IOrdenAppService
         //2. Mapeos
         var orden = new Orden(Guid.NewGuid());
         orden.ClienteId = ordenDto.ClienteId;
-        orden.Estado = OrdenEstado.Registrada;
+        //orden.Estado = OrdenEstado.Registrada;
         orden.Fecha = ordenDto.Fecha;
 
         var observaciones = string.Empty;
@@ -115,6 +115,11 @@ public class OrdenAppService : IOrdenAppService
     }
 
     public Task UpdateAsync(Guid id, OrdenActualizarDto marca)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ListaPaginada<OrdenDto>> GetListAsync(OrdenListInput input)
     {
         throw new NotImplementedException();
     }

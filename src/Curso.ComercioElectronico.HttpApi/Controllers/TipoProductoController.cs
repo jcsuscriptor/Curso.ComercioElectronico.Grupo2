@@ -19,14 +19,14 @@ public class TipoProductoController : ControllerBase
     }
 
     [HttpGet]
-    public ListaPaginada<TipoProductoDto> GetAll(int limit=10,int offset=0)
+    public async Task<ICollection<TipoProductoDto>> GetAllAsync()
     {
 
-        return tipoProductoAppService.GetAll(limit,offset);
+        return await tipoProductoAppService.GetAllAsync();
     }
 
     [HttpPost]
-    public async Task<TipoProductoDto> CreateAsync(TipoProductoCrearActualizarDto marca)
+    public async Task<TipoProductoDto> CreateAsync(TipoProductoCrearDto marca)
     {
 
         return await tipoProductoAppService.CreateAsync(marca);
@@ -34,7 +34,7 @@ public class TipoProductoController : ControllerBase
     }
 
     [HttpPut]
-    public async Task UpdateAsync(int id, TipoProductoCrearActualizarDto marca)
+    public async Task UpdateAsync(string id, TipoProductoActualizarDto marca)
     {
 
         await tipoProductoAppService.UpdateAsync(id, marca);
@@ -42,7 +42,7 @@ public class TipoProductoController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<bool> DeleteAsync(int marcaId)
+    public async Task<bool> DeleteAsync(string marcaId)
     {
 
         return await tipoProductoAppService.DeleteAsync(marcaId);

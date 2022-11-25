@@ -13,6 +13,8 @@ public class Producto
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
     public string Nombre {get;set;}
 
+    public bool Activo { get; set; }
+
     public decimal Precio {get;set;}
 
     public string? Observaciones {get;set;}
@@ -21,15 +23,13 @@ public class Producto
     
 
     [Required]
-    //[ForeignKey("Marca")]
-    //EntidadId. Clave F. A la entidad 
-    public int MarcaId {get;set;}
+    public string MarcaId {get;set;}
 
     public virtual Marca Marca {get; set; }
 
 
     [Required]
-    public int TipoProductoId {get;set;}
+    public string TipoProductoId {get;set;}
 
     public virtual TipoProducto TipoProducto {get;set;}
 

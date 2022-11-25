@@ -6,11 +6,13 @@ namespace Curso.ComercioElectronico.Application;
 public class TipoProductoDto
 {
     [Required]
-    public int Id {get;set;}
+    [StringLength(DominioConstantes.ID_MAXIMO)]
+    [RegularExpression(DominioConstantes.ExpressionRegular.ALFANUMERICOS)]
+    public string Id { get; set; }
 
     [Required]
     [StringLength(DominioConstantes.NOMBRE_MAXIMO)]
-    public string Nombre {get;set;}
+    public string Nombre { get; set; }
 
 }
 

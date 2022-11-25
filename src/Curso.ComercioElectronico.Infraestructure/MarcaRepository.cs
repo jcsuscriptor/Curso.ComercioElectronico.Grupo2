@@ -1,34 +1,31 @@
 
 using Curso.ComercioElectronico.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Curso.ComercioElectronico.Infraestructure;
 
-public class MarcaRepository : EfRepository<Marca,int>, IMarcaRepository
+public class MarcaRepository : EfRepository<Marca,string>, IMarcaRepository
 {
     public MarcaRepository(ComercioElectronicoDbContext context) : base(context)
     {
     }
 
-    public async Task<bool> ExisteNombre(string nombre) {
+    public async Task<bool> ExisteNombre(string nombre, string? idExcluir = null)
+    {
 
-        var resultado = await this._context.Set<Marca>()
-                       .AnyAsync(x => x.Nombre.ToUpper() == nombre.ToUpper());
+        var consulta = this._context.Set<TipoProducto>()
+                        .Where(x => x.Nombre.ToUpper() == nombre.ToUpper());
 
-        return resultado;
-    }
+        if (!string.IsNullOrWhiteSpace(idExcluir))
+        {
+            consulta = consulta.Where(x => x.Id != idExcluir);
+        }
 
-    public async Task<bool> ExisteNombre(string nombre, int idExcluir)  {
-
-        var query =  this._context.Set<Marca>()
-                       .Where(x => x.Id != idExcluir)
-                       .Where(x => x.Nombre.ToUpper() == nombre.ToUpper())
-                       ;
-
-        var resultado = await query.AnyAsync();
+        var resultado = await consulta.AnyAsync();
 
         return resultado;
     }
 
-    
+
 }

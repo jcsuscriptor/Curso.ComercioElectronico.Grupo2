@@ -2,14 +2,15 @@ namespace Curso.ComercioElectronico.Application;
 
 public interface ITipoProductoAppService
 {
-    Task<TipoProductoDto> GetByIdAsync(int id);
+    Task<TipoProductoDto> GetByIdAsync(string id);
 
-    ListaPaginada<TipoProductoDto> GetAll(int limit=10,int offset=0);
+   
+    Task<ICollection<TipoProductoDto>> GetAllAsync();
 
-    Task<TipoProductoDto> CreateAsync(TipoProductoCrearActualizarDto marca);
+    Task<TipoProductoDto> CreateAsync(TipoProductoCrearDto marca);
 
-    Task UpdateAsync (int id, TipoProductoCrearActualizarDto marca);
+    Task UpdateAsync (string id, TipoProductoActualizarDto marca);
 
-    Task<bool> DeleteAsync(int marcaId);
+    Task<bool> DeleteAsync(string marcaId);
 }
 
